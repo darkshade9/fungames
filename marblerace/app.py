@@ -7,6 +7,8 @@ from flask_socketio import SocketIO, emit, join_room, leave_room, \
 from collections import OrderedDict
 import random
 import sys
+import country_list
+
 # Set this variable to "threading", "eventlet" or "gevent" to test the
 # different async modes, or leave it set to None for the application to choose
 # the best option based on installed packages.
@@ -22,7 +24,10 @@ marble_array = ["blue", "red", "green", "yellow", "pink", "purple", "black", "wh
 marble_feature = ["old", "shiny", "bright", "opaque", "transparent", "swirly", "round", "big", "small", "fast"]
 marble_behavior = ["spinning", "bouncing", "rolling", "twirling", "flipping", "crashing"]
 
-marble_countries = ["Panama", "USA", "Greenland", "Russia", "Australia", "China", "India", "Austria", "Algeria", "Western Sahara"]
+#marble_countries = ["Panama", "USA", "Greenland", "Russia", "Australia", "China", "India", "Austria", "Algeria", "Western Sahara"]
+marble_countries = []
+for country in dict(country_list.countries_for_language('en')).values():
+    marble_countries.append(country)
 
 marble = []
 marble_rank = []
@@ -32,7 +37,7 @@ while len(marble_countries) > 0:
     combine_marble_features = select_a_feature+" "+select_a_marble
 
     marble_countries.remove(select_a_marble)
-    marble_feature.remove(select_a_feature)
+    #marble_feature.remove(select_a_feature)
     marble.append(combine_marble_features)
     marble_rank.append(0)
 
@@ -47,7 +52,7 @@ def change_position():
     if up_or_down is not 0:
         marble_rank[random_marble] = marble_rank[random_marble] + 1
     else:
-        marble_rank[random_marble] - 1
+        marble_rank[random_marble] + 4
 
     return chosen_marble
 
